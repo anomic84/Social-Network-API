@@ -75,8 +75,29 @@ updateThought({ params, body }, res) {
         })
         .catch(err => res.json(err));
 },
-
-    // deleteThought({ params }, res) Thought.findOneAndDelete({ _id: params.id })
+deleteThought({ params }, res) {
+    Thought.findOneAndDelete({ _id: params.id })
+      .then(dbThoughtData => {
+        if (!dbThoughtData) {
+          res.status(404).json({ message: 'No thoughts found with that id!' });
+          return;
+        }
+        return User.findOneAndUpdate(
+          { _id: parmas.userId },
+        //   like $push, $pull removes the thought by id
+          { $pull: { thoughts: params.Id } },
+          { new: true }
+        )
+      })
+      .then(dbUserData => {
+        if (!dbUserData) {
+          res.status(404).json({ message: 'No User found with this id!' });
+          return;
+        }
+        res.json(dbUserData);
+      })
+      .catch(err => res.json(err));
+  },
 
     // create reaction({ params, body }, res) Thought.findOneAndUpdate({_id: params.thoughtId}}
 
