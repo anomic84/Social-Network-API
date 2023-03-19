@@ -38,7 +38,11 @@ const userController = {
           });
       },
 
-    // createUser({ body }),res) User.create(body)
+      createUser({ body }, res) {
+        User.create(body)
+          .then(dbUserData => res.json(dbUserData))
+          .catch(err => res.json(err));
+      },
 
     // updateUser({ params, body }, res) User.findOneAndUpdate({ _id: params.id}, body)
 
