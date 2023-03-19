@@ -2,7 +2,7 @@ const { User, Thought } = require('../models');
 
 const thoughtController {
 
-    getAllThoughts(req, res) {
+    getAllThought(req, res) {
         Thought.find({})
             // populate lets us fill out a section by referenceing another schema/model
             .populate({
@@ -18,11 +18,52 @@ const thoughtController {
             .catch(err => {
                 console.log(err);
                 res.sendStatus(400);
-              });
-    }
+            });
+    },
 
-    //getThoughtById({ params }, res) Thought.findOne({ _id: params.id })
 
+        getThoughtById({ params }, res) {
+    Thought.findOne({ _id: params.id })
+        // a lot of this is like stated above in the getALLThoughts code
+        .populate({
+            path: 'reactions',
+            select: '-__v'
+        })
+        .select('-__v')
+        .sort({ _id: -1 })
+        .then(dbThoughtData => {
+            // err response specific to not being able to find the thought by its id
+            if (!dbThoughtData) {
+                res.status(404).json({ message: 'No thoughts found with that id!' });
+                return;
+            }
+            res.json(dbThoughtData);
+        })
+        .catch(err => {
+            console.log(err);
+            res.sendStatus(400);
+        });
+},
+
+createThought({ body }, res) {
+    Thought.create(body)
+        .then(({ _id }) => {
+            return User.findOneAndUpdate(
+                { _id: body.userId },
+                // push appends spcific value to array, this gives the thought its own id
+                { $push: { thoughts: _id } },
+                { new: true }
+            );
+        })
+        .then(dbThoughtData => {
+            if (!dbThoughtData) {
+                res.status(404).json({ message: 'No user found with this id!' });
+                return;
+            }
+            res.json(dbThoughtData);
+        })
+        .catch(err => res.json(err));
+}
     // createThought({ body }, res) Thought.create(body)
 
     // updateThought({ params, body }, res) Thought.findOneAndUpdate({ _id: params.id }, body)
