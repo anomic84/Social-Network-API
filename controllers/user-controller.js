@@ -72,9 +72,39 @@ const userController = {
             })
             .catch(err => res.json(err));
     },
-    // addFriend({ params }, res) User.findOneAndUpdate({ _id: params.userId }
+    addFriend({ params }, res) {
+        User.findOneAndUpdate(
+          { _id: params.userId },
+        //   Mongo's way of using push to add a friend object to the friend array, giving the friend its own id
+          { $push: { friends: params.friendId } },
+          { new: true }
+        )
+          .then((dbUserData) => {
+            if (!dbUserData) {
+              res.status(404).json({ message: 'No user found with this id' });
+              return;
+            }
+            res.json(dbUserData);
+          })
+          .catch((err) => res.status(400).json(err));
+      },
+      deleteFriend({ params }, res) {
+        User.findOneAndUpdate(
+          { _id: params.userId },
+        //   pull, like push, is Mongo code to delete all params of the object "friend" by the friend's id
+          { $pull: { friends: params.friendId } },
+          { new: true }
+        )
+          .then((dbUserData) => {
+            if (!dbUserData) {
+              res.status(404).json({ message: 'No user found with this id' });
+              return;
+            }
+            res.json(dbUserData);
+          })
+          .catch((err) => res.status(400).json(err));
+      }
+    };
 
-    // deleteFriend({ params }, res) User.findOneAndUpdate({ _id: params.userId }
-};
 
 module.exports = userController
