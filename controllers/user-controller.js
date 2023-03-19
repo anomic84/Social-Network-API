@@ -13,7 +13,30 @@ const userController = {
           });
       },
 
-    // getUserById({ params }, res) User.findOne({ _id: params.id})
+      getUserById({ params }, res) {
+        User.findOne({ _id: params.id })
+        // populates user's thoughts into JSON
+          .populate({
+            path: 'thoughts',
+            select: '-__v'
+          })
+        //   populates user's friends into JSON
+          .populate({
+            path: 'friends',
+            select: '-__v'
+          })
+          .then(dbUserData => {
+            if (!dbUserData) {
+              res.status(404).json({ message: 'No User found with this id!' });
+              return;
+            }
+            res.json(dbUserData);
+          })
+          .catch(err => {
+            console.log(err);
+            res.sendStatus(400);
+          });
+      },
 
     // createUser({ body }),res) User.create(body)
 
