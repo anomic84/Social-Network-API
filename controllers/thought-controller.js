@@ -7,7 +7,7 @@ const thoughtController = {
             // populate lets us fill out a section by referenceing another schema/model
             .populate({
                 path: 'reactions',
-                // __v is version key, and the - before it excludes it
+                // __v is version key, and the - before it excludes it, doesn't return it
                 select: '-__v'
             })
             .select('-__v')
