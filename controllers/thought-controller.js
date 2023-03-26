@@ -83,7 +83,7 @@ deleteThought({ params }, res) {
           return;
         }
         return User.findOneAndUpdate(
-          { _id: parmas.userId },
+          { _id: params.userId },
         //   like $push, $pull removes the thought by id
           { $pull: { thoughts: params.Id } },
           { new: true }
