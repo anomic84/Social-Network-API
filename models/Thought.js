@@ -23,6 +23,7 @@ const ReactionSchema = new Schema({
 },
     {
         toJSON: {
+            // vituals lets us see the count of reactions for thought
             virtuals: true,
             getters: true
         },
@@ -50,6 +51,7 @@ const ThoughtSchema = new Schema({
 },
     {
         toJSON: {
+            // virtuals lets us see the count of thoughts for user
             virtuals: true,
             getters: true
         },
