@@ -12,7 +12,10 @@ const UserSchema = new Schema({
         required: true,
         unique: true,
         // regex
-        match: [/.+@.+\..+/]
+        match: [
+            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+            "Please use a valid email address",
+        ],
     },
     thoughts:
         [{
