@@ -76,13 +76,13 @@ updateThought({ params, body }, res) {
         .catch(err => res.json(err));
 },
 deleteThought(req, res) {
-  Thought.findOneAndDelete({ _id: req.params.thoughtId })
+  Thought.findOneAndDelete({ _id: req.params.id })
     .then((thought) =>
       !thought
         ? res.status(404).json({ message: "No thought found with this ID!" })
         : User.findOneAndUpdate(
-            { thoughts: req.params.thoughtId },
-            { $pull: { thoughts: req.params.thoughtId } },
+            { thoughts: req.params.id },
+            { $pull: { thoughts: req.params.id } },
             { new: true }
           )
     )

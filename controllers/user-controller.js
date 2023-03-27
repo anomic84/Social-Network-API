@@ -57,7 +57,7 @@ const userController = {
   },
 
   deleteUser(req, res) {
-    User.findOneAndDelete({ _id: req.params.userId })
+    User.findOneAndDelete({ _id: req.params.id })
       .then((user) =>
         !user
           ? res.status(404).json({ message: "No User found with this id!" })
