@@ -50,3 +50,6 @@ We were challenged with developing our own API DB in MongoDB, it needed to have 
   Spencer Carlson
 - Website - [Spencer Carlson](https://www.spencerccarlson.com)
 - GitHub - [Anomic84](https://github.com/anomic84)
+
+## Aknowledgement 
+- Thank you to Andrea Herbert for her helpful youtube video when I was struggling with making delete/update User/Thought work. Which is why the code in those areas run just (req, res) instead of ({params, res}) in the function props.
